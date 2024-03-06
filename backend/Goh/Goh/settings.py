@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_spectacular',
+    'rest_framework_swagger',
     # local apps
     'services',
     'teams',
@@ -133,7 +134,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "../", "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -151,4 +152,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+# DRF Spectacular
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Goh Website API",
+    # "DESCRIPTION": "Goh website built using Django Rest Framework",
+    # "VERSION": "1.0.0",
+    # "SERVE_INCLUDE_SCHEMA": True,
+}
+
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'Basic': {
+#             'type': 'basic'
+#         }
+#     }
+# }

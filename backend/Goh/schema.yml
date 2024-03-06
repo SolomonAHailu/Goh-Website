@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: Goh Website API
+  version: 1.0.0
+  description: Goh website built using Django Rest Framework
+paths:
+  /api/blogs/:
+    get:
+      operationId: api_blogs_list
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlogRead'
+          description: ''
+    post:
+      operationId: api_blogs_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogWrite'
+          description: ''
+  /api/blogs/{id}/:
+    get:
+      operationId: api_blogs_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this blog.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogRead'
+          description: ''
+    put:
+      operationId: api_blogs_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this blog.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BlogWrite'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogWrite'
+          description: ''
+    patch:
+      operationId: api_blogs_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this blog.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogWrite'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogWrite'
+          description: ''
+    delete:
+      operationId: api_blogs_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this blog.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    BlogRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        author:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          type: string
+          maxLength: 200
+        tags:
+          type: string
+          maxLength: 200
+        image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - content
+      - created_at
+      - id
+      - title
+      - updated_at
+    BlogWrite:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        author:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+        category:
+          type: string
+          maxLength: 200
+        tags:
+          type: string
+          maxLength: 200
+        image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - content
+      - title
+    PatchedBlogWrite:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        author:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+        category:
+          type: string
+          maxLength: 200
+        tags:
+          type: string
+          maxLength: 200
+        image:
+          type: string
+          format: uri
+          nullable: true
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
